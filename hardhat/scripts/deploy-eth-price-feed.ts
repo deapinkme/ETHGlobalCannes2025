@@ -87,24 +87,24 @@ async function main() {
   const contractAddress = await ethPriceFeed.getAddress();
   console.log(`ETH Price Feed deployed to: ${contractAddress}`);
 
-  // Get initial price data
-  const decimals = await ethPriceFeed.getDecimals();
-  console.log(`Price feed decimals: ${decimals}`);
+  // // Get initial price data
+  // const decimals = await ethPriceFeed.getDecimals();
+  // console.log(`Price feed decimals: ${decimals}`);
 
-  // Update the price to get initial data
-  console.log("Updating price...");
-  const tx = await ethPriceFeed.updatePrice();
-  await tx.wait();
+  // // Update the price to get initial data
+  // console.log("Updating price...");
+  // const tx = await ethPriceFeed.updatePrice();
+  // await tx.wait();
 
-  const storedPrice = await ethPriceFeed.getStoredPrice();
-  const lastUpdateTime = await ethPriceFeed.getLastUpdateTime();
+  // const storedPrice = await ethPriceFeed.getStoredPrice();
+  // const lastUpdateTime = await ethPriceFeed.getLastUpdateTime();
   
-  console.log(`Initial ETH/USD price: ${storedPrice}`);
-  console.log(`Last update time: ${new Date(Number(lastUpdateTime) * 1000).toISOString()}`);
+  // console.log(`Initial ETH/USD price: ${storedPrice}`);
+  // console.log(`Last update time: ${new Date(Number(lastUpdateTime) * 1000).toISOString()}`);
   
-  // Convert price to readable format
-  const priceInUSD = Number(storedPrice) / Math.pow(10, decimals);
-  console.log(`ETH/USD price: $${priceInUSD.toFixed(2)}`);
+  // // Convert price to readable format
+  // const priceInUSD = Number(storedPrice) / Math.pow(10, decimals);
+  // console.log(`ETH/USD price: $${priceInUSD.toFixed(2)}`);
 }
 
 main()

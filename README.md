@@ -1,41 +1,33 @@
-# 🧠 Price Oracle Chat
+# 🍃 TruEphirE
 
-**Ask questions. Get reliable crypto prices. Trust your data.**
+**Get reliable crypto prices on Oasis Sapphire. Trust your data.**
 
-**Price Oracle Chat** is an AI-powered chatbot that answers questions about crypto prices like:
-- “What’s the current spot price of ETH?”
-- “Is the current SOL price on Coingecko trustworthy?”
-- “What does Chainlink say about BTC right now?”
-
-Built on trusted data sources and secure AI infrastructure, it combines real-time pricing with a conversational interface.
+**TruEphirE** uses Oasis ROFL to provide that data pulled from other sources, such as Chainlink data feeds and Flare, onto Oasis Sapphire.
 
 ---
 
 ## 🛠️ Stack
 
-- **Frontend**: [Next.js](https://nextjs.org/), modified from the [Vercel Weather Chatbot](https://github.com/vercel/ai-chatbot-weather)
-- **Backend**: Python microservice querying:
+- **Smart Contract**:
   - [Chainlink](https://chain.link/) price oracles
-  - [Coingecko](https://www.coingecko.com/en/api) API
-  - Other trusted price feeds
-- **Secure AI**: LLM runs inside an [Oasis Network](https://oasisprotocol.org/) Trusted Execution Environment (TEE) via ROFL Docker
+  - [Flare](https://dev.flare.network/) read feeds offchain
+  - (Potentially other trusted price feeds)
+- **TEE**: Python microservice querying:
+  - [Chainlink](https://chain.link/) price oracles
+  - [Flare](https://dev.flare.network/) read feeds offchain
+  - Trusted price feeds run inside an [Oasis](https://oasisprotocol.org/) Trusted Execution Environment (TEE) via ROFL Docker
 
 ---
 
 ## ⚙️ Features
 
-- 💬 Natural language interface to ask price-related questions
-- 📉 Inline chart generation instead of weather graphics
-- 🔒 Price validation logic runs securely inside a TEE
-- 🔗 Aggregation from multiple oracle sources for redundancy and reliability
+- Expanding the list of supported data feeds and chains on the [Oasis network](https://docs.chain.link/data-feeds/price-feeds/addresses?page=1&testnetPage=1)
 
 ---
 
 ## 🚀 Getting Started
 
-**Coming soon** – full setup instructions. For now, high-level overview:
-
-### 1. Backend (Python)
+### 1. Smart Contracts (Solidity)
 - Set up a virtual environment
 - Install dependencies
 - Configure and run price aggregation server (Chainlink + Coingecko)
@@ -43,35 +35,6 @@ Built on trusted data sources and secure AI infrastructure, it combines real-tim
 ### 2. Trusted Execution Environment (ROFL in Oasis)
 - Install and run Oasis ROFL Docker container
 - Mount the backend LLM model securely
-
-### 3. Frontend (Next.js)
-- Clone and modify the Vercel AI Chatbot (Weather)
-- Replace weather API calls with your backend endpoint
-- Deploy via [Vercel](https://vercel.com) or run locally
-
----
-
-## 🧪 Example Prompts
-
-> “What’s the spot price of ETH?”  
-> “Is the Chainlink feed for LINK on Polygon trustworthy right now?”  
-> “Has BTC price diverged more than 1% across feeds in the past hour?”
-
----
-
-## 📦 Environment Variables
-
-TBD — expected to include:
-- `CHAINLINK_RPC_URL`
-- `COINGECKO_API_KEY` (if needed)
-- `OASIS_TEE_CONFIG`
-- `LLM_MODEL_PATH`
-
----
-
-## 📄 License
-
-TBD – likely **MIT**, but not yet finalized.
 
 ---
 
@@ -88,10 +51,26 @@ TBD – likely **MIT**, but not yet finalized.
 
 ## 👥 Credits
 
-Made with 🧠 by @deapinkme and @harpoondev
+Made with ❤️ by @deapinkme and @harpoondev
 
 ---
 
 ## 📸 Screenshots / Demo
 
 Coming soon.
+
+
+## Deployment
+
+To deploy smart contract on Sepolia for Chainlink feed reading:
+```
+cd hardhat
+npx hardhat run scripts/deploy-eth-price-feed.ts --network sepolia
+```
+to get
+```
+Deploying ETH Price Feed contract...
+Network: sepolia (Chain ID: 11155111)
+Using ETH/USD Price Feed address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
+ETH Price Feed deployed to: 0x1960Dc99EdC8F7e336A2d90843481d31Ad9455aA
+```

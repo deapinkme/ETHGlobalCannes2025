@@ -1,10 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import requests
 import json
 from web3 import Web3
-import time
-import hashlib
 import base64
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import serialization, hashes

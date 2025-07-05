@@ -88,7 +88,7 @@ TBD – likely **MIT**, but not yet finalized.
 
 ## 👥 Credits
 
-Made with 🧠 by [Your Team Name or GitHub Handles]
+Made with 🧠 by @deapinkme and @harpoondev
 
 ---
 

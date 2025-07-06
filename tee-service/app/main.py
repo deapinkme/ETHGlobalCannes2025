@@ -1,48 +1,40 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
 import json
 from web3 import Web3
-import base64
-from cryptography.hazmat.primitives.asymmetric import ec
-from cryptography.hazmat.primitives import serialization, hashes
+from ContractUtility import ContractUtility
+from RoflUtility import RoflUtility
 
-app = FastAPI()
+# Intermediate contract address deployed on Ethereum
+INTERMEDIATE_CONTRACT = "0x694AA1769357215DE4FAC081bf1f309aDC325306"
+INFURA_RPC = "https://mainnet.infura.io/v3/YOUR_INFURA_KEY"
 
-# Setup Ethereum RPC
-ETH_RPC_URL = "https://mainnet.infura.io/v3/YOUR_INFURA_KEY"
-w3 = Web3(Web3.HTTPProvider(ETH_RPC_URL))
+# Initialize Ethereum RPC for intermediate contract
+eth = Web3(Web3.HTTPProvider(INFURA_RPC))
 
-# Chainlink Aggregator address for ETH/USD
-CHAINLINK_FEED = "0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"
+# Setup Sapphire contract access via ROFL
+rofl_utility = RoflUtility()
+contract_utility = ContractUtility("sapphire-testnet", secret=None)  # assumes contract address and ABI are inside ContractUtility
+oracle_contract = contract_utility.contract
 
-# Load signer key (In a real TEE, this would be securely stored)
-private_key = ec.generate_private_key(ec.SECP256K1())
+# Fetch stored price and timestamp from intermediate contract
+def fetch_stored_eth_usd():
+    abi = json.loads('[{"inputs":[],"name":"getStoredPrice","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]')
+    contract = eth.eth.contract(address=INTERMEDIATE_CONTRACT, abi=abi)
+    price = contract.functions.getStoredPrice().call() / 1e8
+    updated = contract.functions.getLastUpdateTime().call()
+    return price, updated
 
-class PriceResponse(BaseModel):
-    price: float
-    timestamp: int
-    signature: str
+# Submit price to Sapphire smart contract
+if __name__ == "__main__":
+    print("Fetching price from intermediate ETH contract...")
+    price, updated = fetch_stored_eth_usd()
+    print(f"Price: {price}, Timestamp: {updated}")
 
-@app.get("/price", response_model=PriceResponse)
-def get_price():
-    contract = w3.eth.contract(address=CHAINLINK_FEED, abi=json.loads('[{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"}]'))
+    tx = oracle_contract.functions.setPrice(int(price * 1e8), updated).build_transaction({
+        "gas": 150000,
+        "gasPrice": contract_utility.w3.eth.gas_price
+    })
 
-    round_data = contract.functions.latestRoundData().call()
-    answer = round_data[1] / 1e8
-    updated_at = round_data[3]
-
-    payload = f"{answer}:{updated_at}".encode()
-    signature = base64.b64encode(
-        private_key.sign(payload, ec.ECDSA(hashes.SHA256()))
-    ).decode()
-
-    return PriceResponse(price=answer, timestamp=updated_at, signature=signature)
-
-@app.get("/pubkey")
-def get_public_key():
-    pubkey = private_key.public_key()
-    pem = pubkey.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
-    return {"pubkey": pem.decode()}
+    print("Submitting tx via ROFL...")
+    tx_hash = rofl_utility.submit_tx(tx)
+    receipt = contract_utility.w3.eth.wait_for_transaction_receipt(tx_hash)
+    print(f"✅ Submitted. Tx hash: {receipt.transactionHash.hex()}")

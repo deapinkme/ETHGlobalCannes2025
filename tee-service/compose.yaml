@@ -1,0 +1,8 @@
+services:
+  price-relay:
+    build: .
+    platform: linux/amd64
+    environment:
+      - CONTRACT_ADDRESS=0xYourSapphireOracleContract
+    volumes:
+      - /run/rofl-appd.sock:/run/rofl-appd.sock

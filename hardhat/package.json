@@ -2,10 +2,12 @@
   "devDependencies": {
     "@chainlink/contracts": "^0.8.0",
     "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@oasisprotocol/sapphire-contracts": "^0.2.10",
     "@oasisprotocol/sapphire-hardhat": "^2.22.2",
     "hardhat": "^2.25.0"
   },
   "dependencies": {
-    "dotenv": "^17.0.1"
+    "dotenv": "^17.0.1",
+    "bech32": "^2.0.0"
   }
 }

@@ -6,6 +6,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+import "./tasks";
+
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
   networks: {

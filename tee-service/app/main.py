@@ -5,7 +5,7 @@ from RoflUtility import RoflUtility
 
 # Intermediate contract address deployed on Ethereum
 INTERMEDIATE_CONTRACT = "0x694AA1769357215DE4FAC081bf1f309aDC325306"
-INFURA_RPC = "https://mainnet.infura.io/v3/YOUR_INFURA_KEY"
+INFURA_RPC = "https://sepolia.infura.io/v3/d728370699af4389a5db543e2cf63a37"
 
 # Initialize Ethereum RPC for intermediate contract
 eth = Web3(Web3.HTTPProvider(INFURA_RPC))

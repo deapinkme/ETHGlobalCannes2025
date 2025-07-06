@@ -1,9 +1,12 @@
 
 import { HardhatUserConfig } from "hardhat/config";
+import "@oasisprotocol/sapphire-hardhat";
 import "@nomicfoundation/hardhat-toolbox";
 import * as dotenv from "dotenv";
 
 dotenv.config();
+
+import "./tasks";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -45,6 +48,28 @@ const config: HardhatUserConfig = {
     base: {
       url: process.env.BASE_RPC_URL || "https://mainnet.base.org",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+    },
+    // Sapphire
+    'sapphire': {
+      url: "https://sapphire.oasis.io",
+      accounts: process.env.PRIVATE_KEY
+        ? [process.env.PRIVATE_KEY]
+        : [],
+      chainId: 0x5afe,
+    },
+    'sapphire-testnet': {
+      url: "https://testnet.sapphire.oasis.io",
+      accounts: process.env.PRIVATE_KEY
+        ? [process.env.PRIVATE_KEY]
+        : [],
+      chainId: 0x5aff,
+    },
+    'sapphire-localnet': {
+      url: "http://localhost:8545",
+      accounts: process.env.PRIVATE_KEY
+        ? [process.env.PRIVATE_KEY]
+        : [],
+      chainId: 0x5afd,
     },
   },
 };

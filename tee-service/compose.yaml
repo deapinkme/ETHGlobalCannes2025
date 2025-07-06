@@ -1,0 +1,9 @@
+services:
+  price-relay:
+    build: .
+    image: ghcr.io/oasisprotocol/demo-rofl-tgbot:latest
+    platform: linux/amd64
+    environment:
+      - CONTRACT_ADDRESS=0xEA562106f4C18e88FE990622DAD683b7EC4c0516
+    volumes:
+      - /run/rofl-appd.sock:/run/rofl-appd.sock

@@ -74,3 +74,11 @@ Network: sepolia (Chain ID: 11155111)
 Using ETH/USD Price Feed address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
 ETH Price Feed deployed to: 0x1960Dc99EdC8F7e336A2d90843481d31Ad9455aA
 ```
+
+
+
+Sapphire deployment:
+
+✅ Deployed PriceOracle to 0xcF780e57D5ce8E07abCF60AA0aeC9227850db685
+👤 Oracle: 0x9844dbEEeF7EDc74011718362e90af9F9397d97F
+🔐 ROFL App ID: rofl1qz0amqhzy5xksnskfkdfrfm7hr2yjp36pc8hxw7m
